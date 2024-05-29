@@ -52,6 +52,34 @@ const getExperience = async (req, res) => {
     }    
 };
 
+// UPDATE function
+const updateExperience = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { empresa, puesto, fecha_inicio, 
+            fecha_fin, responsabilidades, salario } = req.body;
+
+        if ( id === undefined || empresa === undefined || puesto === undefined ||
+            fecha_inicio === undefined || fecha_fin === undefined || responsabilidades === undefined ||
+            salario === undefined
+        ) {
+            res.status(400).json({ message: "Bad Request. Please fill all fields." });
+        }
+
+        const experience = {
+            id, empresa, puesto, fecha_inicio,
+            fecha_fin, responsabilidades, salario
+        };            
+            
+        const connection = await getConnection();
+        const result = await connection.query("UPDATE experiences SET ? WHERE id = ?", [experience, id]);
+        res.json(result);
+    } catch (error) {
+        res.status(500);
+        res.send(error.message);
+    }    
+};
+
 // DELETE function
 const deleteExperience = async (req, res) => {
     try {
@@ -70,5 +98,6 @@ export const methods = {
     getExperiences,
     addExperiences,
     getExperience,
-    deleteExperience
+    deleteExperience,
+    updateExperience
 };
