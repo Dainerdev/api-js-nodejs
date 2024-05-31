@@ -4,7 +4,7 @@ import { getConnection } from "./../database/database";
 const getExperiences = async (req, res) => {
     try {
         const connection = await getConnection();
-        const result = await connection.query("SELECT id, empresa, puesto, fecha_inicio, fecha_fin, responsabilidades, salario FROM experiences");
+        const result = await connection.query("SELECT id, empresa, puesto, DATE_FORMAT(fecha_inicio, '%Y-%m-%d') AS fecha_inicio, DATE_FORMAT(fecha_fin, '%Y-%m-%d') AS fecha_fin, responsabilidades, salario FROM experiences");
         res.json(result);
     } catch (error) {
         res.status(500);
